@@ -78,7 +78,7 @@ builder.Services.AddAuthorization(options =>
     {
         policy.RequireAuthenticatedUser();
     });
-})
+});
 
 var app = builder.Build();
 
