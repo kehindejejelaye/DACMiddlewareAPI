@@ -55,6 +55,7 @@ public class UsersController : ControllerBase
         return Ok(userServiceResult);
     }
 
+    [Authorize(Policy = "AuthUser")]
     [HttpPost]
     public async Task<IActionResult> CreateUser([FromBody] UserForCreationDto user, [FromHeader] string APP_KEY, [FromHeader] string APP_ID)
     {
@@ -82,6 +83,7 @@ public class UsersController : ControllerBase
         return Ok(userServiceResult);
     }
 
+    [Authorize(Policy = "AuthUser")]
     [HttpPut("{userId}")]
     public async Task<IActionResult> UpdateUser(int userId, UserForUpdateDto updatedUser, [FromHeader] string APP_KEY, [FromHeader] string APP_ID)
     {
@@ -109,6 +111,7 @@ public class UsersController : ControllerBase
         return Ok(userServiceResult);
     }
 
+    [Authorize(Policy = "AuthUser")]
     [HttpGet("{userId}")]
     public async Task<IActionResult> GetUser(int userId, [FromHeader] string APP_KEY, [FromHeader] string APP_ID)
     {
@@ -126,6 +129,7 @@ public class UsersController : ControllerBase
         return Ok(userServiceResult);
     }
 
+    [Authorize(Policy = "AuthUser")]
     [HttpDelete("{userId}")]
     public async Task<IActionResult> DeleteUser(int userId, [FromHeader] string APP_KEY, [FromHeader] string APP_ID)
     {
@@ -144,6 +148,7 @@ public class UsersController : ControllerBase
 
     }
 
+    [Authorize(Policy = "AuthUser")]
     [HttpPost("{userId}/assignuser")]
     public async Task<IActionResult> AttachUser(int userId, AttachUserDto obj, [FromHeader] string APP_KEY, [FromHeader] string APP_ID)
     {
@@ -171,6 +176,7 @@ public class UsersController : ControllerBase
         return Ok(userServiceResult);
     }
 
+    [Authorize(Policy = "AuthUser")]
     [HttpGet("{userId}/assignuser")]
     public async Task<IActionResult> GetAssignedUsers(int userId, [FromHeader] string APP_KEY, [FromHeader] string APP_ID)
     {
@@ -188,6 +194,7 @@ public class UsersController : ControllerBase
         return Ok(userServiceResult);
     }
 
+    [Authorize(Policy = "AuthUser")]
     [HttpDelete("{userId}/assignuser/{assignUserId}")]
     public async Task<IActionResult> DeleteUser(int userId, int assignUserId, [FromHeader] string APP_KEY, [FromHeader] string APP_ID)
     {
@@ -205,6 +212,7 @@ public class UsersController : ControllerBase
 
     }
 
+    [Authorize(Policy = "AuthUser")]
     [HttpPost("{userId}/bankaccount")]
     public async Task<IActionResult> CreateBankAccount(int userId, [FromHeader] string APP_KEY, [FromHeader] string APP_ID)
     {

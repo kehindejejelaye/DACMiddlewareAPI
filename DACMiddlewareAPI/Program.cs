@@ -4,6 +4,7 @@ using DACMiddlewareAPI.Repositories;
 using DACMiddlewareAPI.ServiceExtensions;
 using DACMiddlewareAPI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 
@@ -33,7 +34,30 @@ builder.Host.UseSerilog();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(setupAction =>
+{
+    setupAction.AddSecurityDefinition("BankApiBearerAuth", new OpenApiSecurityScheme()
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        Description = "Input a valid token to access this API"
+    });
+
+    setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "BankApiBearerAuth"
+                }
+            },
+            new List<string>()
+        }
+    });
+});
 builder.Services.AddDbContext<MiddlewareContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -48,6 +72,13 @@ builder.Services.AddAuthentication(options =>
 })
     .AddClientAuthentication(options => { });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AuthUser", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+    });
+})
 
 var app = builder.Build();
 
